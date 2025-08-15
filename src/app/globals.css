@@ -1,26 +1,281 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
 }
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Custom RainbowKit button styling - size and shape only */
+.rainbow-kit-connect,
+.rainbow-kit-connect-button,
+[data-testid="connect-button"],
+[data-testid="connect-button"] button,
+.rainbow-kit-connect button,
+.rainbow-kit-connect-button button,
+[class*="connect"] button,
+[class*="Connect"] button,
+button[data-testid="connect-button"],
+button[class*="connect"],
+button[data-testid*="connect"],
+button[data-testid*="Connect"] {
+  padding: 0.5rem 1rem !important;
+  border-radius: 0.5rem !important;
+  font-size: 0.875rem !important;
+  min-width: auto !important;
+  width: auto !important;
+  font-weight: 500 !important;
+  transition: all 0.2s !important;
+}
+
+/* Green styling ONLY for the initial connect button - exclude modals */
+.rainbow-kit-connect:not([data-testid*="modal"]):not([class*="modal"]),
+.rainbow-kit-connect-button:not([data-testid*="modal"]):not([class*="modal"]),
+[data-testid="connect-button"]:not([data-testid*="modal"]):not([class*="modal"]),
+[data-testid="connect-button"] button:not([data-testid*="modal"]):not([class*="modal"]),
+.rainbow-kit-connect button:not([data-testid*="modal"]):not([class*="modal"]),
+.rainbow-kit-connect-button button:not([data-testid*="modal"]):not([class*="modal"]),
+[class*="connect"] button:not([data-testid*="modal"]):not([class*="modal"]),
+[class*="Connect"] button:not([data-testid*="modal"]):not([class*="modal"]),
+button[data-testid="connect-button"]:not([data-testid*="modal"]):not([class*="modal"]),
+button[class*="connect"]:not([data-testid*="modal"]):not([class*="modal"]),
+button[data-testid*="connect"]:not([data-testid*="modal"]):not([class*="modal"]),
+button[data-testid*="Connect"]:not([data-testid*="modal"]):not([class*="modal"]) {
+  background-color: #059669 !important; /* emerald-600 */
+  color: white !important;
+  border: none !important;
+}
+
+/* Override connected state to be grey and compact - exclude modals */
+.rainbow-kit-connect[data-connected="true"]:not([data-testid*="modal"]):not([class*="modal"]),
+.rainbow-kit-connect-button[data-connected="true"]:not([data-testid*="modal"]):not([class*="modal"]),
+[data-testid="connect-button"][data-connected="true"]:not([data-testid*="modal"]):not([class*="modal"]),
+.rainbow-kit-connect[data-connected="true"] button:not([data-testid*="modal"]):not([class*="modal"]),
+.rainbow-kit-connect-button[data-connected="true"] button:not([data-testid*="modal"]):not([class*="modal"]),
+[class*="connect"][data-connected="true"] button:not([data-testid*="modal"]):not([class*="modal"]),
+[class*="Connect"][data-connected="true"] button:not([data-testid*="modal"]):not([class*="modal"]) {
+  background-color: #6b7280 !important; /* gray-500 */
+  color: white !important;
+  border: none !important;
+  padding: 0.5rem 1rem !important;
+  min-width: auto !important;
+  width: auto !important;
+}
+
+/* Hover state for connect button - exclude modals */
+.rainbow-kit-connect:not([data-testid*="modal"]):not([class*="modal"]):hover,
+.rainbow-kit-connect-button:not([data-testid*="modal"]):not([class*="modal"]):hover,
+[data-testid="connect-button"]:not([data-testid*="modal"]):not([class*="modal"]):hover,
+[data-testid="connect-button"] button:not([data-testid*="modal"]):not([class*="modal"]):hover,
+.rainbow-kit-connect button:not([data-testid*="modal"]):not([class*="modal"]):hover,
+.rainbow-kit-connect-button button:not([data-testid*="modal"]):not([class*="modal"]):hover,
+[class*="connect"] button:not([data-testid*="modal"]):not([class*="modal"]):hover,
+[class*="Connect"] button:not([data-testid*="modal"]):not([class*="modal"]):hover,
+button[data-testid="connect-button"]:not([data-testid*="modal"]):not([class*="modal"]):hover,
+button[class*="connect"]:not([data-testid*="modal"]):not([class*="modal"]):hover,
+button[data-testid*="connect"]:not([data-testid*="modal"]):not([class*="modal"]):hover,
+button[data-testid*="Connect"]:not([data-testid*="modal"]):not([class*="modal"]):hover {
+  background-color: #047857 !important; /* emerald-700 */
+}
+
+/* Comprehensive RainbowKit modal fixes */
+.rainbow-kit-modal,
+[data-testid*="modal"],
+[class*="modal"],
+[data-testid*="Modal"],
+[class*="Modal"] {
+  z-index: 9999 !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Remove all green styling from modal content */
+.rainbow-kit-modal *,
+[data-testid*="modal"] *,
+[class*="modal"] *,
+[data-testid*="Modal"] *,
+[class*="Modal"] * {
+  background-color: initial !important;
+  color: initial !important;
+}
+
+/* Specific button styling overrides for modals */
+.rainbow-kit-modal button,
+[data-testid*="modal"] button,
+[class*="modal"] button,
+[data-testid*="Modal"] button,
+[class*="Modal"] button {
+  background-color: initial !important;
+  color: initial !important;
+  border: initial !important;
+  padding: initial !important;
+  margin: initial !important;
+  font-size: initial !important;
+  font-weight: initial !important;
+  border-radius: initial !important;
+}
+
+/* Ensure modal overlay is properly positioned */
+.rainbow-kit-modal > div:first-child,
+[data-testid*="modal"] > div:first-child,
+[class*="modal"] > div:first-child,
+[data-testid*="Modal"] > div:first-child,
+[class*="Modal"] > div:first-child {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Ensure modal content is centered */
+.rainbow-kit-modal > div:last-child,
+[data-testid*="modal"] > div:last-child,
+[class*="modal"] > div:last-child,
+[data-testid*="Modal"] > div:last-child,
+[class*="Modal"] > div:last-child {
+  position: relative !important;
+  z-index: 10000 !important;
+  background-color: white !important;
+  border-radius: 12px !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+  max-width: 90vw !important;
+  max-height: 90vh !important;
+  overflow: auto !important;
+}
+
+/* Additional RainbowKit modal styling fixes */
+.rainbow-kit-modal [data-testid*="recent"],
+.rainbow-kit-modal [class*="recent"],
+[data-testid*="modal"] [data-testid*="recent"],
+[data-testid*="modal"] [class*="recent"],
+[class*="modal"] [data-testid*="recent"],
+[class*="modal"] [class*="recent"] {
+  background-color: initial !important;
+  color: initial !important;
+}
+
+/* Remove any green styling from modal content */
+.rainbow-kit-modal [data-testid*="connect"],
+.rainbow-kit-modal [class*="connect"],
+.rainbow-kit-modal [data-testid*="Connect"],
+.rainbow-kit-modal [class*="Connect"],
+[data-testid*="modal"] [data-testid*="connect"],
+[data-testid*="modal"] [class*="connect"],
+[data-testid*="modal"] [data-testid*="Connect"],
+[data-testid*="modal"] [class*="Connect"],
+[class*="modal"] [data-testid*="connect"],
+[class*="modal"] [class*="connect"],
+[class*="modal"] [data-testid*="Connect"],
+[class*="modal"] [class*="Connect"] {
+  background-color: initial !important;
+  color: initial !important;
+}
+
+/* Ensure modal buttons have proper styling */
+.rainbow-kit-modal button[data-testid*="connect"],
+.rainbow-kit-modal button[class*="connect"],
+.rainbow-kit-modal button[data-testid*="Connect"],
+.rainbow-kit-modal button[class*="Connect"],
+[data-testid*="modal"] button[data-testid*="connect"],
+[data-testid*="modal"] button[class*="connect"],
+[data-testid*="modal"] button[data-testid*="Connect"],
+[data-testid*="modal"] button[class*="Connect"],
+[class*="modal"] button[data-testid*="connect"],
+[class*="modal"] button[class*="connect"],
+[class*="modal"] button[data-testid*="Connect"],
+[class*="modal"] button[class*="Connect"] {
+  background-color: initial !important;
+  color: initial !important;
+  border: initial !important;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 640px) {
+  .rainbow-kit-connect,
+  .rainbow-kit-connect-button,
+  [data-testid="connect-button"],
+  [data-testid="connect-button"] button,
+  .rainbow-kit-connect button,
+  .rainbow-kit-connect-button button,
+  [class*="connect"] button,
+  [class*="Connect"] button,
+  button[data-testid="connect-button"],
+  button[class*="connect"],
+  button[class*="Connect"] {
+    padding: 0.5rem !important;
+    min-width: auto !important;
+    width: auto !important;
+  }
+}
+
+/* Additional modal positioning fixes for custom modals */
+.fixed.inset-0.bg-black\/50.z-50.flex.items-center.justify-center {
+  z-index: 9999 !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 1rem !important;
+}
+
+/* Ensure disconnect modal is properly centered */
+.fixed.inset-0.bg-black\/50.z-50.flex.items-center.justify-center > div {
+  max-width: 90vw !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+}
+
+/* Dark mode support for modals */
+.dark .rainbow-kit-modal > div:last-child,
+.dark [data-testid*="modal"] > div:last-child,
+.dark [class*="modal"] > div:last-child,
+.dark [data-testid*="Modal"] > div:last-child,
+.dark [class*="Modal"] > div:last-child {
+  background-color: #1f2937 !important; /* gray-800 */
+  color: white !important;
+}
+
+/* Move disconnect modal down */
+.fixed.inset-0.bg-black\/50.z-\[9999\].flex.items-center.justify-center {
+  align-items: flex-start !important;
+  padding-top: 25vh !important;
+}
+
