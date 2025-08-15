@@ -10,7 +10,7 @@ This project now integrates with real wallets using RainbowKit and Wagmi for the
 - **Explorer**: https://explorer-pepu-v2-testnet-vn4qxxp9og.t.conduit.xyz
 - **Currency**: PEPU
 
-## Features
+## Feature
 
 ### 1. Wallet Connection
 - Click the "Connect" button in the header to connect your wallet
