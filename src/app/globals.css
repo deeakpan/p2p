@@ -273,6 +273,16 @@ button[data-testid*="Connect"]:not([data-testid*="modal"]):not([class*="modal"])
   color: white !important;
 }
 
+/* Invisible scrollbar for sidebar */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
+}
+
 /* Move disconnect modal down */
 .fixed.inset-0.bg-black\/50.z-\[9999\].flex.items-center.justify-center {
   align-items: flex-start !important;
