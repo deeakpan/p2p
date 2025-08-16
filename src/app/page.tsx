@@ -39,7 +39,7 @@ const ThemeContext = createContext({
   toggleTheme: () => {}
 });
 
-export const useTheme = () => useContext(ThemeContext);
+const useTheme = () => useContext(ThemeContext);
 
 // Enhanced mock data
 const markets = [
