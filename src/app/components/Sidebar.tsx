@@ -19,6 +19,7 @@ import {
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount, useBalance, useChainId } from 'wagmi';
 import { pepuTestnet } from '../chains';
+import { usePathname } from 'next/navigation';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -28,16 +29,18 @@ interface SidebarProps {
 }
 
 export function Sidebar({ isOpen, onClose, collapsed, onToggleCollapse }: SidebarProps) {
+  const pathname = usePathname();
+  
   const sidebarItems = [
-    { icon: Home, label: "Markets", href: "/", active: true },
-    { icon: PieChart, label: "Portfolio", href: "/portfolio" },
-    { icon: Plus, label: "Create Market", href: "/create-market" },
-    { icon: Plus, label: "Add Token", href: "/add-token" },
-    { icon: History, label: "History", href: "/history" },
-    { icon: TrendingUp, label: "Analytics", href: "/analytics" },
-    { icon: Lock, label: "Staking", href: "/staking" },
-    { icon: MessageCircle, label: "Community", href: "/community" },
-    { icon: Settings, label: "Settings", href: "/settings" }
+    { icon: Home, label: "Markets", href: "/", active: pathname === "/" },
+    { icon: PieChart, label: "Portfolio", href: "/portfolio", active: pathname === "/portfolio" },
+    { icon: Plus, label: "Create Market", href: "/create-market", active: pathname === "/create-market" },
+    { icon: Plus, label: "Add Token", href: "/add-token", active: pathname === "/add-token" },
+    { icon: History, label: "History", href: "/history", active: pathname === "/history" },
+    { icon: TrendingUp, label: "Analytics", href: "/analytics", active: pathname === "/analytics" },
+    { icon: Lock, label: "Staking", href: "/staking", active: pathname === "/staking" },
+    { icon: MessageCircle, label: "Community", href: "/community", active: pathname === "/community" },
+    { icon: Settings, label: "Settings", href: "/settings", active: pathname === "/settings" }
   ];
 
   return (

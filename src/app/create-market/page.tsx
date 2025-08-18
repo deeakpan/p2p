@@ -123,36 +123,41 @@ export default function CreateMarketPage() {
                   >
                     <Menu size={20} />
                   </button>
-                  <h1 className="text-xl font-semibold">Create New Market</h1>
+                  <div className="flex flex-col">
+                    <h1 className="text-sm lg:text-xl font-semibold">Create Market</h1>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 lg:hidden">New prediction market</p>
+                  </div>
                 </div>
 
                 {/* Right: Theme + Wallet */}
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 lg:gap-3">
                   <button
                     onClick={toggleTheme}
                     className={`p-2 rounded-lg transition-colors ${
                       isDarkMode ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
                     }`}
                   >
-                    {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+                    {isDarkMode ? <Sun size={16} className="lg:w-5 lg:h-5" /> : <Moon size={16} className="lg:w-5 lg:h-5" />}
                   </button>
-                  <ConnectButton />
+                  <div className="hidden sm:block">
+                    <ConnectButton />
+                  </div>
                 </div>
               </div>
             </div>
           </header>
 
           {/* Page Content */}
-          <div className="p-6">
+          <div className="p-4 lg:p-6">
             <div className="max-w-4xl mx-auto">
               {/* Form */}
               <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
-                <div className="p-6 space-y-6">
+                <div className="p-4 lg:p-6 space-y-5 lg:space-y-6">
                   {/* Basic Info */}
                   <div className="space-y-4">
-                    <h2 className="text-lg font-semibold text-emerald-600 dark:text-emerald-400">Basic Information</h2>
+                    <h2 className="text-base lg:text-lg font-semibold text-emerald-600 dark:text-emerald-400">Basic Information</h2>
                     
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 gap-4">
                       <div>
                         <label className="block text-sm font-medium mb-2">Market Title</label>
                         <input
@@ -192,9 +197,9 @@ export default function CreateMarketPage() {
 
                   {/* Duration */}
                   <div className="space-y-4">
-                    <h2 className="text-lg font-semibold text-emerald-600 dark:text-emerald-400">Market Duration</h2>
+                    <h2 className="text-base lg:text-lg font-semibold text-emerald-600 dark:text-emerald-400">Market Duration</h2>
                     
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 gap-4">
                       <div>
                         <label className="block text-sm font-medium mb-2">End Date</label>
                         <div className="relative">
@@ -224,10 +229,10 @@ export default function CreateMarketPage() {
                   </div>
 
                   {/* Categories & Tokens Row */}
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 gap-6">
                     {/* Categories */}
                     <div className="space-y-3">
-                      <h2 className="text-lg font-semibold text-emerald-600 dark:text-emerald-400">Categories</h2>
+                      <h2 className="text-base lg:text-lg font-semibold text-emerald-600 dark:text-emerald-400">Categories</h2>
                       
                       <div className="flex flex-wrap gap-2">
                         {categories.map((category) => (
@@ -251,7 +256,7 @@ export default function CreateMarketPage() {
 
                     {/* Supported Tokens */}
                     <div className="space-y-3">
-                      <h2 className="text-lg font-semibold text-emerald-600 dark:text-emerald-400">Supported Tokens</h2>
+                      <h2 className="text-base lg:text-lg font-semibold text-emerald-600 dark:text-emerald-400">Supported Tokens</h2>
                       
                       <div className="flex flex-wrap gap-2">
                         {tokenOptions.map((token) => (
@@ -277,9 +282,9 @@ export default function CreateMarketPage() {
 
                   {/* Outcome Type */}
                   <div className="space-y-4">
-                    <h2 className="text-lg font-semibold text-emerald-600 dark:text-emerald-400">Outcome Type</h2>
+                    <h2 className="text-base lg:text-lg font-semibold text-emerald-600 dark:text-emerald-400">Outcome Type</h2>
                     
-                    <div className="flex gap-4">
+                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                       <button
                         onClick={() => setOutcomeType('yesno')}
                         className={`
@@ -312,7 +317,7 @@ export default function CreateMarketPage() {
                   {outcomeType === 'multiple' && (
                     <div className="space-y-4">
                       <div className="flex items-center justify-between">
-                        <h3 className="text-md font-medium">Options (2-4)</h3>
+                        <h3 className="text-sm lg:text-md font-medium">Options (2-4)</h3>
                         {multipleOptions.length < 4 && (
                           <button
                             onClick={addMultipleOption}
