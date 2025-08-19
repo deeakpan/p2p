@@ -33,14 +33,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount, useBalance, useChainId, useSwitchChain, useDisconnect } from 'wagmi';
 import { pepuTestnet } from './chains';
 import { Sidebar } from './components/Sidebar';
-
-// Theme Context for global theme management
-const ThemeContext = createContext({
-  isDarkMode: true,
-  toggleTheme: () => {}
-});
-
-const useTheme = () => useContext(ThemeContext);
+import { useTheme } from './context/ThemeContext';
 
 // Enhanced mock data
 const markets = [
@@ -176,30 +169,7 @@ function formatCurrency(num: number): string {
   return `$${num.toLocaleString()}`;
 }
 
-// Theme Provider Component
-function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [isDarkMode, setIsDarkMode] = useState(true);
 
-  useEffect(() => {
-    const saved = localStorage.getItem('theme');
-    if (saved) {
-      setIsDarkMode(saved === 'dark');
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-    document.documentElement.classList.toggle('dark', isDarkMode);
-  }, [isDarkMode]);
-
-  const toggleTheme = () => setIsDarkMode(!isDarkMode);
-
-  return (
-    <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  );
-}
 
 
 
@@ -635,87 +605,87 @@ function MarketRow({
       {isExpanded && (
         <div className={`ml-4 p-4 rounded-lg border ${
           isDarkMode ? 'bg-gray-800/50 border-gray-800' : 'bg-gray-50 border-gray-200'
-                  }`}>
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                      <div>
-                        <h4 className="font-semibold mb-3 text-sm">Market Details</h4>
-                        <div className="space-y-2 text-xs">
-                          <div className="flex justify-between">
-                            <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Creator</span>
-                            <div className="flex items-center gap-2">
-                              <span className="font-mono">{market.creator}</span>
+        }`}>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div>
+              <h4 className="font-semibold mb-3 text-sm">Market Details</h4>
+              <div className="space-y-2 text-xs">
+                <div className="flex justify-between">
+                  <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Creator</span>
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono">{market.creator}</span>
                     <button className={`p-1 rounded hover:${isDarkMode ? 'bg-gray-700' : 'bg-gray-200'}`}>
-                                <Copy size={12} />
-                              </button>
-                            </div>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Close Date</span>
-                            <span>{new Date(market.endTime).toLocaleDateString()}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Total Liquidity</span>
-                            <span className="font-medium">{formatCurrency(market.totalLiquidity)}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Participants</span>
-                            <span>{market.participants.toLocaleString()}</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div>
-                        <h4 className="font-semibold mb-3 text-sm">Performance</h4>
-                        <div className="space-y-2 text-xs">
-                          <div className="flex justify-between">
-                            <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>24h Change</span>
-                  <span className="text-emerald-500">+2.3%</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>All Time High</span>
-                            <span>0.89</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>All Time Low</span>
-                            <span>0.12</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div>
-                        <h4 className="font-semibold mb-3 text-sm">Trade</h4>
-                        <div className="space-y-2">
-                          {!isConnected ? (
-                            <div className="text-center py-4">
-                              <p className="text-sm text-gray-500 mb-3">Connect your wallet to trade</p>
-                              <ConnectButton />
-                            </div>
-                          ) : chainId !== pepuTestnet.id ? (
-                            <div className="text-center py-4">
-                              <p className="text-sm text-yellow-600 mb-3">Please switch to PEPU Testnet</p>
-                              <button
-                                onClick={() => window.location.reload()}
-                                className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-medium rounded-lg transition-colors"
-                              >
-                                Switch Network
-                              </button>
-                            </div>
-                          ) : (
-                            <>
-                              <button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors">
-                                Buy YES - {market.yesPrice.toFixed(2)}
-                              </button>
-                              <button className="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors">
-                                Buy NO - {market.noPrice.toFixed(2)}
-                              </button>
-                            </>
-                          )}
-                        </div>
-                      </div>
-                    </div>
+                      <Copy size={12} />
+                    </button>
                   </div>
+                </div>
+                <div className="flex justify-between">
+                  <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Close Date</span>
+                  <span>{new Date(market.endTime).toLocaleDateString()}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Total Liquidity</span>
+                  <span className="font-medium">{formatCurrency(market.totalLiquidity)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Participants</span>
+                  <span>{market.participants.toLocaleString()}</span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-3 text-sm">Performance</h4>
+              <div className="space-y-2 text-xs">
+                <div className="flex justify-between">
+                  <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>24h Change</span>
+                  <span className="text-emerald-500">+2.3%</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>All Time High</span>
+                  <span>0.89</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>All Time Low</span>
+                  <span>0.12</span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-3 text-sm">Trade</h4>
+              <div className="space-y-2">
+                {!isConnected ? (
+                  <div className="text-center py-4">
+                    <p className="text-sm text-gray-500 mb-3">Connect your wallet to trade</p>
+                    <ConnectButton />
+                  </div>
+                ) : chainId !== pepuTestnet.id ? (
+                  <div className="text-center py-4">
+                    <p className="text-sm text-yellow-600 mb-3">Please switch to PEPU Testnet</p>
+                    <button
+                      onClick={() => window.location.reload()}
+                      className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-medium rounded-lg transition-colors"
+                    >
+                      Switch Network
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors">
+                      Buy YES - {market.yesPrice.toFixed(2)}
+                    </button>
+                    <button className="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors">
+                      Buy NO - {market.noPrice.toFixed(2)}
+                    </button>
+                  </>
                 )}
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -734,21 +704,19 @@ export default function ProfessionalPredictionMarket() {
   });
 
   return (
-    <ThemeProvider>
-      <MainContent 
-        sidebarOpen={sidebarOpen}
-        setSidebarOpen={setSidebarOpen}
-        sidebarCollapsed={sidebarCollapsed}
-        setSidebarCollapsed={setSidebarCollapsed}
-        expandedMarket={expandedMarket}
-        setExpandedMarket={setExpandedMarket}
-        activeFilter={activeFilter}
-        setActiveFilter={setActiveFilter}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        filteredMarkets={filteredMarkets}
-      />
-    </ThemeProvider>
+    <MainContent 
+      sidebarOpen={sidebarOpen}
+      setSidebarOpen={setSidebarOpen}
+      sidebarCollapsed={sidebarCollapsed}
+      setSidebarCollapsed={setSidebarCollapsed}
+      expandedMarket={expandedMarket}
+      setExpandedMarket={setExpandedMarket}
+      activeFilter={activeFilter}
+      setActiveFilter={setActiveFilter}
+      searchQuery={searchQuery}
+      setSearchQuery={setSearchQuery}
+      filteredMarkets={filteredMarkets}
+    />
   );
 }
 
@@ -790,6 +758,7 @@ function MainContent({
         onClose={() => setSidebarOpen(false)}
         collapsed={sidebarCollapsed}
         onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
+        isDarkMode={isDarkMode}
       />
       
       <div className={`transition-all duration-300 ${sidebarCollapsed ? 'lg:ml-16' : 'lg:ml-64'}`}>
@@ -802,62 +771,62 @@ function MainContent({
           setActiveFilter={setActiveFilter}
         />
         
-                  <StatsBar />
-          
-          {/* Network Status Banner */}
-          {isConnected && chainId !== pepuTestnet.id && (
-            <div className={`border-b ${isDarkMode ? 'border-gray-800 bg-yellow-900/20' : 'border-yellow-200 bg-yellow-50'}`}>
-              <div className="p-4 text-center">
-                <div className="flex items-center justify-center gap-3">
-                  <div className="w-3 h-3 bg-yellow-500 rounded-full animate-pulse"></div>
-                  <p className={`text-sm font-medium ${isDarkMode ? 'text-yellow-200' : 'text-yellow-800'}`}>
-                    Please switch to PEPU Testnet to interact with markets
-                  </p>
-                  <button
-                    onClick={() => window.location.reload()}
-                    className="px-3 py-1 bg-yellow-500 hover:bg-yellow-600 text-white text-xs font-medium rounded-lg transition-colors"
-                  >
-                    Switch Network
-                  </button>
+        <StatsBar />
+        
+        {/* Network Status Banner */}
+        {isConnected && chainId !== pepuTestnet.id && (
+          <div className={`border-b ${isDarkMode ? 'border-gray-800 bg-yellow-900/20' : 'border-yellow-200 bg-yellow-50'}`}>
+            <div className="p-4 text-center">
+              <div className="flex items-center justify-center gap-3">
+                <div className="w-3 h-3 bg-yellow-500 rounded-full animate-pulse"></div>
+                <p className={`text-sm font-medium ${isDarkMode ? 'text-yellow-200' : 'text-yellow-800'}`}>
+                  Please switch to PEPU Testnet to interact with markets
+                </p>
+                <button
+                  onClick={() => window.location.reload()}
+                  className="px-3 py-1 bg-yellow-500 hover:bg-yellow-600 text-white text-xs font-medium rounded-lg transition-colors"
+                >
+                  Switch Network
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+        
+        <div className={`p-4 ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`}>
+          {/* Wallet Connection Status */}
+          {!isConnected && (
+            <div className={`mb-6 p-4 rounded-lg border ${
+              isDarkMode ? 'bg-gray-800/50 border-gray-700' : 'bg-gray-50 border-gray-200'
+            }`}>
+              <div className="text-center">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                  <Lock size={24} className="text-gray-400" />
                 </div>
+                <h3 className={`text-lg font-semibold mb-2 ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>
+                  Connect Your Wallet
+                </h3>
+                <p className={`text-sm mb-4 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                  Connect your wallet to start trading on prediction markets
+                </p>
+                <ConnectButton />
               </div>
             </div>
           )}
           
-                    <div className={`p-4 ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`}>
-            {/* Wallet Connection Status */}
-            {!isConnected && (
-              <div className={`mb-6 p-4 rounded-lg border ${
-                isDarkMode ? 'bg-gray-800/50 border-gray-700' : 'bg-gray-50 border-gray-200'
-              }`}>
-                <div className="text-center">
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                    <Lock size={24} className="text-gray-400" />
-                  </div>
-                  <h3 className={`text-lg font-semibold mb-2 ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>
-                    Connect Your Wallet
-                  </h3>
-                  <p className={`text-sm mb-4 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                    Connect your wallet to start trading on prediction markets
-                  </p>
-                  <ConnectButton />
-                </div>
-              </div>
-            )}
-            
-            {/* Desktop Table Header */}
-            <div className={`hidden lg:grid grid-cols-12 gap-4 py-3 px-4 text-xs font-semibold uppercase tracking-wide border-b mb-4 ${
-              isDarkMode ? 'text-gray-500 border-gray-800' : 'text-gray-600 border-gray-300'
-            }`}>
-              <div className="col-span-4">Market</div>
-              <div className="col-span-1">Time Left</div>
-              <div className="col-span-4">Token Pools</div>
-              <div className="col-span-2">Current Odds</div>
-              <div className="col-span-1">24h Volume</div>
-            </div>
-            
-            {/* Market List */}
-            <div className="space-y-1">
+          {/* Desktop Table Header */}
+          <div className={`hidden lg:grid grid-cols-12 gap-4 py-3 px-4 text-xs font-semibold uppercase tracking-wide border-b mb-4 ${
+            isDarkMode ? 'text-gray-500 border-gray-800' : 'text-gray-600 border-gray-300'
+          }`}>
+            <div className="col-span-4">Market</div>
+            <div className="col-span-1">Time Left</div>
+            <div className="col-span-4">Token Pools</div>
+            <div className="col-span-2">Current Odds</div>
+            <div className="col-span-1">24h Volume</div>
+          </div>
+          
+          {/* Market List */}
+          <div className="space-y-1">
             {filteredMarkets.map((market) => (
               <MarketRow
                 key={market.id}
